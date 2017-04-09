@@ -1,0 +1,37 @@
+{
+  "name": "webvr-experiments",
+  "version": "1.0.0",
+  "repository": "git@github.com:charlestati/webvr-experiments.git",
+  "author": "charlestati <git@charlestati.com>",
+  "license": "Apache-2.0",
+  "scripts": {
+    "setup": "mkdir -p dist/scripts/ dist/styles/ dist/images/ dist/audio/",
+    "clean": "rm -rf dist/scripts/* dist/styles/* dist/images/* dist/audio/* dist/*.html",
+    "lint": "standard --fix --verbose src/scripts/**/*.js | snazzy",
+    "scripts": "browserify --transform babelify --transform uglifyify --outfile dist/scripts/bundle.js src/scripts/main.js",
+    "scripts-watch": "watchify --debug --transform babelify --outfile dist/scripts/bundle.js src/scripts/main.js",
+    "styles": "node-sass --output-style compressed src/styles/main.scss dist/styles/main.css",
+    "styles-watch": "node-sass --watch --recursive --source-map-embed src/styles/main.scss dist/styles/main.css",
+    "images": "imagemin src/images/* --out-dir=dist/images/",
+    "audio": "cp -r src/audio/* dist/audio/",
+    "html": "cp -r src/*.html dist/",
+    "browser-sync": "browser-sync start --no-open --no-notify --server dist/ --files dist/",
+    "build": "yarn run clean && yarn run setup && yarn run scripts && yarn run styles && yarn run images && yarn run audio && yarn run html",
+    "serve": "yarn run build && concurrently --kill-others \"yarn run scripts-watch\" \"yarn run styles-watch\" \"yarn run browser-sync\"",
+    "start": "yarn run build",
+    "test": "standard src/scripts/**/*.js"
+  },
+  "devDependencies": {
+    "babel-preset-latest": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browser-sync": "^2.18.8",
+    "browserify": "^14.3.0",
+    "concurrently": "^3.4.0",
+    "imagemin-cli": "^3.0.0",
+    "node-sass": "^4.5.2",
+    "snazzy": "^7.0.0",
+    "standard": "^10.0.1",
+    "uglifyify": "^3.0.4",
+    "watchify": "^3.9.0"
+  }
+}
